@@ -1,2 +1,2 @@
-# INFIN_2019
-EUSS (Informatica Industrial 2018-2019)
+# INFIN_2020
+EUSS (Informatica Industrial 2019-2020)
