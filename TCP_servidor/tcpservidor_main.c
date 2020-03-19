@@ -1,26 +1,3 @@
-/*
- * XXXXXX.c
- * 
- * Copyright 2019 INFIN (EUSS) <euss@euss.cat>
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- * 
- * 
- */
-
 /***************************************************************************
                           main.c  -  server
                              -------------------
@@ -84,7 +61,7 @@ int main(int argc, char *argv[])
     int         numeromostra = 0;
     int         valorTemp = 46000;
     char        valorTempstr[6];
-    char		missatge[] = "me la suda bastant\n";
+    char		missatgesdeprova[] = "me la suda bastant\n";
 
     /*Preparar l'adreça local*/
     sockAddrSize=sizeof(struct sockaddr_in);
@@ -113,19 +90,23 @@ int main(int argc, char *argv[])
         /*Rebre*/
         memset( buffer, 0, 256 );
         result = read(newFd, buffer, 256);
-        bufferlen = strlen(buffer[256]);
+        bufferlen = strlen(buffer);
 
-        printf("Missatge rebut del client(bytes %d): %s\n",	result, buffer);
-        if (buffer[0] == '{' && buffer|bufferlen-1| == '}'){
+       // printf("El caràcter que estem enviat del buffer 2 és\n");
+        printf("Missatge rebut del client(bytes %d): %c\n",	result, buffer);
+
+        if (buffer[0] == '{' && buffer[bufferlen-1] == '}'){
             switch (buffer[1]) {
-                case 'M':
+                case '1':
                     switch (buffer[2]) {
-                        case '0':
+                        case '0': //cas M0
+                            printf("Això funciona i estem a la etapa M0");
                             strcpy(buffer, "{M0}\n");
-                            result = write(newFd, buffer, strlen(bufferlen) + 1);
+                            result = write(newFd, buffer, strlen(bufferlen));
                             printf("Missatge enviat a client(bytes %d): %s\n", result, buffer);
-                            break;
-                        case '1':
+                                break;
+                        case '1': //caso M
+                            printf("Això funciona i estem a la etapa M1");
                             strcpy(numeromostrastr, "000");
                             strcpy(numeromostra, "000");
                             tempsstr[0] = '0';
@@ -137,33 +118,65 @@ int main(int argc, char *argv[])
                             numeromostrastr[2] = buffer[5];
                             printf("Número de mostres %s\n", numeromostrastr);
                             strcpy(buffer, "{M0}\n");
-                            result = write(newFd, buffer, strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena
-                            printf("Missatge enviat a client(bytes %d): %s\n El temps és de: %d i el número de mostres: %f \n", result, buffer, temps, numeromostra);
-                            break;
-                        default:
-                            strcpy("{M1}\n");
                             result = write(newFd, buffer,strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena
-                            printf("Missatge enviat a client (bytes %d): %s\n", result, missatge);
-                                break;
+                            printf("Missatge enviat a client(bytes %d): %s\n El temps és de: %d i el número de mostres: %f \n", result, buffer, temps, numeromostra);
+                               break;
+                        default:
+                            printf("Això funciona i estem a la etapa error cas M\n");
+                            strcpy(buffer, "{E1}\n");
+                            result = write(newFd, buffer,strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
+                            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                               break;
                         }
                         break;
-                case'U':
-                    memset(missatge, 0, strlen(missatge));
-                    printf("%d\n", valorTemp);
+                case '2': // caso U
+                    printf("Això funciona i estem a la etapa U de moment");
+                    memset(buffer, 0, strlen(buffer));
+                    printf("\nLa temperatura és de: %d\n", valorTemp);
                     sprintf(valorTempstr, "%d",valorTemp);
+                    strcpy(buffer, "{U0");
+                    strcat(buffer, valorTempstr);
+                    strcat(buffer, "}");
+                    printf("%s\n", buffer);
+                    memset(buffer, 0, strlen(buffer)+1);
+                    //strcpy(buffer, buffer);
+                    result = write(newFd, buffer, 50);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                        break;
+                case '3': //caso X
+                    //mostrar la lectura maxima en el registre circular
 
+                        break;
+                case '4': // caso Y
+                    //mostrar la lectura mínima en el registre circular
+
+                        break;
+                case '5': //caso R
+                    //resetejar el máxim i mínim
+
+                        break;
+                case '6': // caso B
+                    //demanar el número de mostres guardares a la array auesta circular
+
+                        break;
             }
+
+
+        } else if (buffer[0] != '{' || buffer[bufferlen-1] != '}'){
+            strcpy(buffer, "{E2}");
+            result = write(newFd, buffer, strlen(buffer)+1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
+            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
 
 
         }
         /*Enviar*/
-        strcpy(buffer,missatge); //Copiar missatge a buffer
+       /* strcpy(buffer,missatge); //Copiar missatge a buffer
         result = write(newFd, buffer, strlen(buffer)+1); //+1 per enviar el 0 final de cadena
-        printf("Missatge enviat a client(bytes %d): %s\n",	result, missatge);
+        printf("Missatge enviat a client(bytes %d): %s\n",	result, missatge);*/
 
         /*Tancar el socket fill*/
-        result = close(newFd);
+       // result = close(newFd);
     }
 }
 
-
+    
