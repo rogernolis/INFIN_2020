@@ -30,7 +30,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-
+#include <pthread.h>
 #define SERVER_PORT_NUM		5001
 #define SERVER_MAX_CONNECTIONS	4
 
@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     float         valorTemp = 46.00;
     char        valorTempstr[6];
     char		missatgesdeprova[] = "Hola\n";
+    pthread_t Hilos[5];
 
     /*Preparar l'adreça local*/
     sockAddrSize=sizeof(struct sockaddr_in);
@@ -77,18 +78,18 @@ int main(int argc, char *argv[])
 
     /*Crear una cua per les peticions de connexió*/
     result = listen(sFd, SERVER_MAX_CONNECTIONS);
-
-    /*Bucle s'acceptació de connexions*/
+    printf("\nServidor esperant connexions\n");
+    /*Esperar conexió. sFd: socket pare, newFd: socket fill*/
+    //Aceptar client
+    newFd=accept(sFd, (struct sockaddr *) &clientAddr, &sockAddrSize);
+    printf("Connexión acceptada del client: adreça %s, port %d\n",	inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
+    
+    //PROTOCOL DE COMUNICACIÓ
     while(1){
-        printf("\nServidor esperant connexions\n");
-
-        /*Esperar conexió. sFd: socket pare, newFd: socket fill*/
-        newFd=accept(sFd, (struct sockaddr *) &clientAddr, &sockAddrSize);
-        printf("Connexión acceptada del client: adreça %s, port %d\n",	inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
 
         /*Rebre*/
-        memset( buffer, 0, 256 );
-        result = read(newFd, buffer, 256);
+        memset(buffer, 0, 256 );
+        result = read(newFd, buffer, 256); //Mirar si ha llegado algun mensaje.
         bufferlen = strlen(buffer);
 
        // printf("El caràcter que estem enviat del buffer 2 és\n");
@@ -191,3 +192,5 @@ int main(int argc, char *argv[])
        // result = close(newFd);
     }
 }
+
+
