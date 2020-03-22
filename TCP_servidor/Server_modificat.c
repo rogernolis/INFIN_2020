@@ -19,7 +19,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -30,10 +29,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include <pthread.h>
 #define SERVER_PORT_NUM		5001
 #define SERVER_MAX_CONNECTIONS	4
-
 #define REQUEST_MSG_SIZE	1024
 
 
@@ -61,8 +58,7 @@ int main(int argc, char *argv[])
     float         valorTemp = 46.00;
     char        valorTempstr[6];
     char		missatgesdeprova[] = "Hola\n";
-    pthread_t Hilos[5];
-
+	
     /*Preparar l'adreça local*/
     sockAddrSize=sizeof(struct sockaddr_in);
     bzero ((char *)&serverAddr, sockAddrSize); //Posar l'estructura a zero
@@ -80,7 +76,8 @@ int main(int argc, char *argv[])
     result = listen(sFd, SERVER_MAX_CONNECTIONS);
     printf("\nServidor esperant connexions\n");
     /*Esperar conexió. sFd: socket pare, newFd: socket fill*/
-    //Aceptar client
+   
+    //Esperar i acceptar client
     newFd=accept(sFd, (struct sockaddr *) &clientAddr, &sockAddrSize);
     printf("Connexión acceptada del client: adreça %s, port %d\n",	inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
     
