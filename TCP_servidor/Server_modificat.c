@@ -44,10 +44,10 @@
 *
 */
 //DADES REGISTRE
-char MAXIMA[6]="99.99";
-char MINIMA[6]="00.00";
-int nscans=100;
-char M_ANTIGA[6]="12.10";
+char MAXIMA[6]="99.99"; //*
+char MINIMA[6]="00.00";//*
+int nscans=0;
+char M_ANTIGA[6]="12.10";//*
 char arrayCircular[L_Array][TAM_MUESTRA]= {00.00,00.00,00.00};
 char valor_transportat[6];
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     int         numeromostra = 0;
     float       valorTemp = 46.00;
     char        valorTempstr[6];
-    char		missatgesdeprova[] = "Hola\n";
+    char		missatgesdeprova[] = "Hola\n";//*
 	int         Mode=0; //Indicador: 1 marxa 0 parada
 	
     /*Preparar l'adreça local*/
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
                 case 'M':
                     switch (buffer[2]) {
                         case '0': //cas M0 ORDRE PARADA
-                            printf("Això funciona i estem a la etapa M0");
+                            printf("Això funciona i estem a la etapa M0");//*
 				//FUNCIONS DE LA ETAPA:
 				//1() Comprobar si el sistema ja està en mode parada.
 				//2()Si no ho està, donar l'ordre de posar mode Parada. 
@@ -121,10 +121,10 @@ int main(int argc, char *argv[])
 			    memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer, "{M0}\n");
                             result = write(newFd, buffer, strlen(buffer)+1);
-                            printf("Missatge enviat a client(bytes %d): %s\n", result, buffer);
+                            printf("Missatge enviat a client(bytes %d): %s\n", result, buffer);//*
                                 break;
                         case '1': //cas M1 ORDRE MARXA
-                            printf("Això funciona i estem a la etapa M1 \n");
+                            printf("Això funciona i estem a la etapa M1 \n");//*
 				//FUNCIONS DE LA ETAPA:
 				//1() Comprobar si el sistema ja està en mode Marxa.
 				//2()Si no ho està, donar l'ordre de posar mode Marxa segons la configuració enviada. 
@@ -144,20 +144,20 @@ int main(int argc, char *argv[])
                             strcpy(buffer, "{M0}\n");//Retornar missatge amb codi de validació 0 -> OK
 			    printf("ENVIAMENT: %s\n", buffer);
                             result = write(newFd, buffer,strlen(buffer) + 1); 
-                            printf("Missatge enviat a client(bytes %d): %s\n El temps es de: %d i el numero de mostres: %d \n", result, buffer, temps, numeromostra);
+                            printf("Missatge enviat a client(bytes %d): %s\n El temps es de: %d i el numero de mostres: %d \n", result, buffer, temps, numeromostra);//*
                                break;
                         default:
-                            printf("Això funciona i estem a la etapa error cas M\n");
+                            printf("Això funciona i estem a la etapa error cas M\n");//*
 			    memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer, "{M1}\n");
 			    printf("ENVIAMENT: %s\n", buffer);
                             result = write(newFd, buffer,strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                                break;
                         }
                         break;
                 case 'U': // cas U DADA ANTIGA
-                    printf("Això funciona i estem a la etapa U\n");
+                    printf("Això funciona i estem a la etapa U\n");//*
 		    //FUNCIONS DE LA ETAPA:
 		    //1()Agafar última dada del historial
 		    //2()Prepararla enviament a client
@@ -167,10 +167,10 @@ int main(int argc, char *argv[])
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer,strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
                 case 'X': //cas X MAXIMA REGISTRE
-		    printf("Això funciona i estem a la etapa X\n");
+		    printf("Això funciona i estem a la etapa X\n");//*
 		    //FUNCIONS DE LA ETAPA:
 		    //1()Agafar dada màxima del registre. (MAXIMA)
 		    //2()Prepararla enviament a client
@@ -180,10 +180,10 @@ int main(int argc, char *argv[])
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer, strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
                 case 'Y': // cas Y MINIMA REGISTRE
-		    printf("Això funciona i estem a la etapa Y\n");
+		    printf("Això funciona i estem a la etapa Y\n");//*
 		    //FUNCIONS DE LA ETAPA:
 		    //1()Agafar dada mínima del registre. (MINIMA)
 		    //2()Prepararla enviament a client
@@ -193,23 +193,23 @@ int main(int argc, char *argv[])
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer, strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
                 case 'R': //cas R RESET REGISTRES
-	  	    printf("Això funciona i estem a la etapa R\n");
+	  	    printf("Això funciona i estem a la etapa R\n");//*
                     //resetejar el máxim i mínim
-		    sprintf(MAXIMA,"00.00");
-		    sprintf(MINIMA,"00.00");
+		    sprintf(MAXIMA,"00.00");//*
+		    sprintf(MINIMA,"00.00");//*
 		    //Comprovant
-		    printf("MAXIMA: %s\nMINIMA: %s\n", MAXIMA, MINIMA);
+		    printf("MAXIMA: %s\nMINIMA: %s\n", MAXIMA, MINIMA);//*
 		    memset(buffer, 0, strlen(buffer));
 		    strcpy(buffer, "{R0}");
 		    printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer,strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
                 case 'B': // cas B NUMERO DE MOSTRES
-		    printf("Això funciona i estem a la etapa B\n");
+		    printf("Això funciona i estem a la etapa B\n");//*
 	   	    //FUNCIONS DE LA ETAPA:
 		    //1()Agafar variable que conta el numero de mostres guardades (nscans)
 		    //2()Preparar enviament a client
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer, strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
             }
 
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
         } else if (buffer[0] != '{' || buffer[bufferlen-1] != '}'){
             strcpy(buffer, "{E2}");
             result = write(newFd, buffer, strlen(buffer)+1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+            printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
 
 
         }
