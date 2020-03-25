@@ -44,12 +44,12 @@
 *
 */
 //DADES REGISTRE / variables Globals / intentar fer-les locals?
-char MAXIMA[6]="99.99"; //*
-char MINIMA[6]="00.00";//*
-int nscans=0;
-char M_ANTIGA[6]="12.10";//*
-char arrayCircular[L_Array][TAM_MUESTRA]= {00.00,00.00,00.00}; //Matriu dades temperatura a la llista
-char valor_transportat[6];
+char 	MAXIMA[6]="99.99"; //*
+char 	MINIMA[6]="00.00";//*
+int 	nscans=0;
+char 	M_ANTIGA[6]="12.10";//*
+char 	arrayCircular[L_Array][TAM_MUESTRA]= {00.00,00.00,00.00}; //Matriu dades temperatura a la llista
+char 	valor_transportat[6];
 
 //FUNCIONS
 void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana);
@@ -57,8 +57,8 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana);
 
 int main(int argc, char *argv[])
 {
-    struct sockaddr_in	serverAddr;
-    struct sockaddr_in	clientAddr;
+    struct 		sockaddr_in	serverAddr;
+    struct 		sockaddr_in	clientAddr;
     unsigned int			sockAddrSize;
     int			sFd;
     int			newFd;
@@ -68,10 +68,10 @@ int main(int argc, char *argv[])
     int         temps = 0;
     char        tempsstr[2];
     int         numeromostra = 0;
-    float       valorTemp = 46.00;
-    char        valorTempstr[6];
-    char		missatgesdeprova[] = "Hola\n";//*
-	int         Mode=0; //Indicador: 1 marxa 0 parada
+    //float     valorTemp = 46.00;
+    //char      valorTempstr[6];
+    //char		missatgesdeprova[] = "Hola\n";
+	//int       Mode=0; //Indicador: 1 marxa 0 parada
 	
     /*Preparar l'adreça local*/
     sockAddrSize=sizeof(struct sockaddr_in);
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 							memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer, "{M0}\n");
                             result = write(newFd, buffer, strlen(buffer)+1);
-                            printf("\nMissatge enviat a client(bytes %d): %s\n", result, buffer);//*
+                            printf("Missatge enviat a client(bytes %d): %s\n", result, buffer);//*
                                 break;
                         case '1': //cas M1 ORDRE MARXA
                             printf("Això funciona i estem a la etapa M1 \n");//*
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
                             printf("Número de mostres: %i\n", numeromostra);//*Comprovació/ENVIAMENT VIA SERIE A CONTROL S
 							//Obrir thread en cas de volguer consultar altres dades mentres es va analitzant.
 							//Iniciar comunicació amb Control sensor
-						Comunicacio_ControlSensor(tempsstr, numeromostra);
+							Comunicacio_ControlSensor(tempsstr, numeromostra);
 
 
 							//Enviar comprovació a client.
@@ -147,9 +147,9 @@ int main(int argc, char *argv[])
                                break;
                         default:
                             printf("Això funciona i estem a la etapa error cas M\n");//*
-			    memset(buffer, 0, strlen(buffer)+1);
+							memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer, "{M1}\n");
-			    printf("ENVIAMENT: %s\n", buffer);
+						printf("ENVIAMENT: %s\n", buffer);
                             result = write(newFd, buffer,strlen(buffer) + 1); // el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
                             printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                                break;
@@ -157,11 +157,11 @@ int main(int argc, char *argv[])
                         break;
                 case 'U': // cas U DADA ANTIGA
                     printf("Això funciona i estem a la etapa U\n");//*
-		    //FUNCIONS DE LA ETAPA:
-		    //1()Agafar última dada del historial
-		    //2()Prepararla enviament a client
+					//FUNCIONS DE LA ETAPA:
+					//1()Agafar última dada del historial
+					//2()Prepararla enviament a client
                     memset(buffer, 0, strlen(buffer));
-		    strcpy(buffer, "{U0");
+					strcpy(buffer, "{U0");
                     strcat(buffer, M_ANTIGA);
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
