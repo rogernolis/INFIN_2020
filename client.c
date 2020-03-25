@@ -3,6 +3,18 @@
 #include <config.h>
 #endif
 
+
+
+
+
+
+
+
+
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -191,7 +203,7 @@ int main(int argc, char *argv[]){
 				case 's':
 					j=1;
 					break;
-				case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter
+				case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter venga tius q avui acabem
 					break;
 				default:
 					printf("Opció incorrecta\n");	
