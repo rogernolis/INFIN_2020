@@ -1,4 +1,3 @@
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -86,15 +85,16 @@ int main(int argc, char *argv[]){
 							cadena[0]='{';			//posar primers valors de la cadena :{M0
 							cadena[1]='M';
 							cadena[2]='0';
-							printf("Eu seleccionat parar l'adquisició\n");
-							do{			//es demana introduir els segons de mostreig, si aquests són erronis, s'indicara i es demnara que es tornin a introduir
+							printf("Heu seleccionat parar l'adquisició\n");
+							/*do{			//es demana introduir els segons de mostreig, si aquests són erronis, s'indicara i es demnara que es tornin a introduir
 								if(i!=0){
 									printf("VALOR ERRONI\n");
 								}
 								printf("Quants segons de mostreig voleu(1..20)?\n");
 								scanf("%s",&cadena[3]);
 								i++;
-							}while((cadena[3]=='2' && cadena[4]>'0')|| (cadena[3]>'2' && cadena[4]!= '\0') || (isalpha(cadena[3])!=0)); 
+								}
+							while((cadena[3]=='2' && cadena[4]>'0')|| (cadena[3]>'2' && cadena[4]!= '\0') || (isalpha(cadena[3])!=0)); 
 							do{
 								if(t!=0){
 									printf("VALOR ERRONI\n");
@@ -102,8 +102,9 @@ int main(int argc, char *argv[]){
 								printf("Número de mostres fer la mitjana(1..9)?\n");
 								scanf("%s",&cadena2[0]);
 								t++;
-							}while(isalpha(cadena2[0])!=0);
-							cadena2[1]='}';
+							}
+							while(isalpha(cadena2[0])!=0);*/
+							cadena2[0]='}';
 							strcat(cadena,cadena2);			//s'uneixen les dues cadenes per formar una de sola
 							break;		
 						case '1':
