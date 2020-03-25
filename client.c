@@ -3,18 +3,6 @@
 #include <config.h>
 #endif
 
-
-
-
-
-
-
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -95,11 +83,11 @@ int main(int argc, char *argv[]){
 					input2 = getchar();
 					switch (input2){
 						case '0':
-							cadena[0]='{';//posar primers valors de la cadena :{M0
+							cadena[0]='{';			//posar primers valors de la cadena :{M0
 							cadena[1]='M';
 							cadena[2]='0';
 							printf("Eu seleccionat parar l'adquisició\n");
-							do{																	//es demana introduir els segons de mostreig, si aquests són erronis, s'indicara i es demnara que es tornin a introduir
+							do{			//es demana introduir els segons de mostreig, si aquests són erronis, s'indicara i es demnara que es tornin a introduir
 								if(i!=0){
 									printf("VALOR ERRONI\n");
 								}
@@ -116,13 +104,13 @@ int main(int argc, char *argv[]){
 								t++;
 							}while(isalpha(cadena2[0])!=0);
 							cadena2[1]='}';
-							strcat(cadena,cadena2);																//s'uneixen les dues cadenes per formar una de sola
+							strcat(cadena,cadena2);			//s'uneixen les dues cadenes per formar una de sola
 							break;		
 						case '1':
 							cadena[0]='{';
 							cadena[1]='M';
 							cadena[2]='1';
-							printf("Eu seleccionat parar l'adquisició\n");
+							printf("Heu seleccionat posada en marxa\n");
 							do{
 								if(i!=0){
 									printf("VALOR ERRONI\n");
@@ -148,10 +136,10 @@ int main(int argc, char *argv[]){
 							goto menu;
 							break;	
 					}
-					strcpy(buffer,cadena);																	//enviar al servidor la cadena
+					strcpy(buffer,cadena);					//enviar al servidor la cadena
 					result = write(sFd, buffer, strlen(buffer));
 					printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer); 
-					result = read(sFd, buffer, 256);                                                        //rebre resposta servidor
+					result = read(sFd, buffer, 256);       	//rebre resposta servidor
 					printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);                   
 					break;
 				case '2':
@@ -160,7 +148,7 @@ int main(int argc, char *argv[]){
 					result = write(sFd, buffer, strlen(buffer));
 					printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer); 
 					result = read(sFd, buffer, 256);
-					if (buffer[1]!='U' || buffer[2]!='0'){                                                        //si la resposta del servidor no es la esperada s'indica al client i se li comunica al servidor,i es torna al menú(provar amb opcio 2 i extrendre a les altres posteriorment)
+					if (buffer[1]!='U' || buffer[2]!='0'){ 	//si la resposta del servidor no es la esperada s'indica al client i se li comunica al servidor,i es torna al menú(provar amb opcio 2 i extrendre a les altres posteriorment)
 						printf("ERROR PROTOCOL");
 						strcpy(buffer,"ERROR PROTOCOL");
 						result = write(sFd, buffer, strlen(buffer));
@@ -203,7 +191,8 @@ int main(int argc, char *argv[]){
 				case 's':
 					j=1;
 					break;
-				case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter venga tius q avui acabem
+				case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter
+				
 					break;
 				default:
 					printf("Opció incorrecta\n");	
