@@ -70,16 +70,22 @@ int main(int argc, char *argv[]){
 		/*Enviar*/
 		while(j==0){
 			menu:
+			i=0;
+			t=0;
 			ImprimirMenu();
-			input1 = getchar();
-			getchar();
+			scanf("%s",&input1);
+			//input1 = getchar();
+			//getchar();
+			for(int r=0;r<6;r++){
+				cadena[r]='\0';
+			}
 			switch (input1){				//seleccionar les diferents opcions a enviar al servidor
 				case '1':
 					printf("Heu seleccionat l'opció {M}:Posar en marxa/parar adquisició\n");
 					printf("Seleccioneu:\n");
 					printf("0:Parada\n");
 					printf("1:Marxa\n");
-					input2 = getchar();
+					scanf("%s",&input2);
 					switch (input2){
 						case '0':
 							cadena[0]='{';			//posar primers valors de la cadena :{M0
@@ -104,7 +110,7 @@ int main(int argc, char *argv[]){
 								t++;
 							}
 							while(isalpha(cadena2[0])!=0);*/
-							cadena2[0]='}';
+							cadena2[1]='}';
 							strcat(cadena,cadena2);			//s'uneixen les dues cadenes per formar una de sola
 							break;		
 						case '1':
@@ -120,6 +126,11 @@ int main(int argc, char *argv[]){
 								scanf("%s",&cadena[3]);
 								i++;
 							}while((cadena[3]=='2' && cadena[4]>'0')|| (cadena[3]>'2' && cadena[4]!= '\0') || (isalpha(cadena[3])!=0)); 
+							if(cadena[4]=='\0'){
+								printf("una xifra");
+								cadena[4]=cadena[3];
+								cadena[3]='0';
+							}
 							do{
 								if(t!=0){
 									printf("VALOR ERRONI\n");
