@@ -129,8 +129,15 @@ int main(int argc, char *argv[])
 							//FUNCIONS DE LA ETAPA:
 							//1() Comprobar si el sistema ja està en mode Marxa.
 							//2()Si no ho està, donar l'ordre de posar mode Marxa segons la configuració enviada. 
-                            tempsstr[0] = buffer[3];//Agafem les dades de temps
-                            tempsstr[1] = buffer[4];
+							if (buffer[3] == "0")
+							{
+								tempsstr[0] = buffer[4];
+							}
+							else
+							{
+								tempsstr[0] = buffer[3];//Agafem les dades de temps
+								tempsstr[1] = buffer[4];
+							}
                             temps = atoi(tempsstr);//Aquí posem els valors de temps a tempstr en int
                             numeromostra = (buffer[5]- 48); //Agafem la dada del número de mostres. Operació Char to Int
                             printf("Número de mostres: %i\n", numeromostra);//*Comprovació/ENVIAMENT VIA SERIE A CONTROL S
@@ -144,7 +151,7 @@ int main(int argc, char *argv[])
                             strcpy(buffer,"{M0}\n");//Retornar missatge amb codi de validació 0 -> OK
 							//printf("ENVIAMENT: %s\n", buffer);
                             result = write(newFd, buffer,strlen(buffer) + 1); 
-                            printf("Missatge enviat a client(bytes %d): %s\nEl temps es de: %d i el numero de mostres: %d \n", result, buffer, temps, numeromostra);//*
+                            printf("Missatge enviat a client(bytes %d): %s\nEl temps és de: %d i el numero de mostres: %d \n", result, buffer, temps, numeromostra);//*
                                break;
                         default:
                             printf("Això funciona i estem a la etapa error cas M\n");//*
