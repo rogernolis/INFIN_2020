@@ -91,6 +91,7 @@ int main(int argc, char *argv[]){
 							cadena[0]='{';			//posar primers valors de la cadena :{M0
 							cadena[1]='M';
 							cadena[2]='0';
+							cadena[3]='}';
 							printf("Heu seleccionat parar l'adquisició\n");
 							/*do{			//es demana introduir els segons de mostreig, si aquests són erronis, s'indicara i es demnara que es tornin a introduir
 								if(i!=0){
@@ -110,9 +111,7 @@ int main(int argc, char *argv[]){
 								t++;
 							}
 							while(isalpha(cadena2[0])!=0);*/
-							cadena2[1]='}';
-							strcat(cadena,cadena2);			//s'uneixen les dues cadenes per formar una de sola
-							break;		
+								break;		
 						case '1':
 							cadena[0]='{';
 							cadena[1]='M';
