@@ -46,7 +46,7 @@
 //DADES REGISTRE / variables Globals / intentar fer-les locals?
 char 	MAXIMA[6]="99.99"; //*
 char 	MINIMA[6]="00.00";//*
-int 	nscans=100;
+int 	nscans=0100;
 char 	M_ANTIGA[6]="12.10";//*
 char 	arrayCircular[L_Array][TAM_MUESTRA]= {}; //Matriu dades temperatura a la llista
 char 	valor_transportat[6];
@@ -234,7 +234,6 @@ int main(int argc, char *argv[])
                     result = write(newFd, buffer, strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
                     printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
                         break;
-
 
 		default:
 					printf("Això funciona i estem a la etapa d'error de paràmetres\n");
