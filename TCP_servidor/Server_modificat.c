@@ -46,9 +46,9 @@
 //DADES REGISTRE / variables Globals / intentar fer-les locals?
 char 	MAXIMA[6]="99.99"; //*
 char 	MINIMA[6]="00.00";//*
-int 	nscans=9999;
+int 	nscans=100;
 char 	M_ANTIGA[6]="12.10";//*
-char 	arrayCircular[L_Array][TAM_MUESTRA]= {00.00,00.00,00.00}; //Matriu dades temperatura a la llista
+char 	arrayCircular[L_Array][TAM_MUESTRA]= {}; //Matriu dades temperatura a la llista
 char 	valor_transportat[6];
 
 //FUNCIONS
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
 				
 							//Enviar comprovació a client.
 							memset(buffer, 0, strlen(buffer)+1);
-                            strcpy(buffer, "{M0}\n");
+                            strcpy(buffer, "{M0}");
                             result = write(newFd, buffer, strlen(buffer)+1);
                             printf("Missatge enviat a client(bytes %d): %s\n", result, buffer);
                             printf("Adquisició finalitzada\n");    
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 							//FUNCIONS DE LA ETAPA:
 							//1() Comprobar si el sistema ja està en mode Marxa.
 							//2()Si no ho està, donar l'ordre de posar mode Marxa segons la configuració enviada. 
-							if (buffer[3] == "0")
+							if (buffer[3] == '0')
 							{
 								tempsstr[0] = buffer[4];
 							}
