@@ -50,8 +50,9 @@ int main(int argc, char *argv[]){
 		
 		
 		while(j==0){
-			char  		cadena[256]={};
-			char 		cadena2[256]={};
+			char  		cadena[50]={};
+			char		cadena1[50]={};
+			char 		cadena2[50]={};
 			menu:
 			i=0;
 			h=0;
@@ -133,32 +134,36 @@ int main(int argc, char *argv[]){
 													printf("VALOR ERRONI\n");
 												}
 												printf("Quants segons de mostreig voleu(1..20)?\n");
-												scanf("%s",&cadena[3]);
+												memset(cadena1, 0, strlen(cadena1)+1);
+												scanf("%s",&cadena1[0]);
 												i++;
 											}
-											while((cadena[3]>='2' && cadena[4]>'0')|| (strlen(cadena)>5) || (isalpha(cadena[3])!=0)); 
-												if(cadena[4]=='\0')
+											while((cadena1[0]>='2' && cadena1[1]>'0')|| (strlen(cadena1)>2) || (cadena1[0]> '2' && cadena1[1]>='0') ||(isalpha(cadena1[0])!=0)); 
+												if(cadena1[1]=='\0')
 												{
-													printf("una xifra\n");
-													cadena[4]=cadena[3];
-													cadena[3]='0';
+													//printf("una xifra\n");
+													cadena1[1]=cadena1[0];
+													cadena1[0]='0';
 											}
 											do{
 												if(t!=0){
 													printf("VALOR ERRONI\n");
 												}
 												printf("Número de mostres fer la mitjana(1..9)?\n");
+												memset(cadena2, 0, strlen(cadena2)+1);
 												scanf("%s",&cadena2[0]);
 												t++;
 											}
 											while((isalpha(cadena2[0])!=0) || (cadena2[0]>='1' && cadena2[1]>='0') || (strlen(cadena2)>1));
 												cadena2[1]='}';
-												strcat(cadena,cadena2);
+												strncat(cadena, cadena1,2);
+												strcat(cadena, cadena2);
+												
 													break;
 										default:
 											printf("Opció incorrecta\n");	
 											printf("He llegit 0x%hhx \n",input1[0]);
-											cadena2[1]=input1[0];
+											cadena2[1] = input1[0];
 											strcat(cadena,cadena2);
 												break;	
 									}
