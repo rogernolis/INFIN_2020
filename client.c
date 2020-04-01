@@ -172,7 +172,8 @@ int main(int argc, char *argv[]){
 									result = write(sFd, buffer, strlen(buffer));
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer); 
 									result = read(sFd, buffer, 256);       	//rebre resposta servidor
-									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);                   
+									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
+									printf("L'adquisició esta en marxa");           
 										break;
 								case '2':
 									printf("Heu seleccionat l'opció {U}:Mostra més antiga\n");
@@ -187,7 +188,9 @@ int main(int argc, char *argv[]){
 										result = write(sFd, buffer, strlen(buffer));
 										goto menu;
 									}
-									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);                 
+									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
+									buffer[strlen(buffer)-1]='\0';
+									printf("La mostra més antiga és:%s",&buffer[3]);              
 										break;
 								case '3':
 									printf("Heu seleccionat l'opció {X}:Demanar màxim\n");
@@ -195,7 +198,9 @@ int main(int argc, char *argv[]){
 									result = write(sFd, buffer, strlen(buffer));
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer);  
 									result = read(sFd, buffer, 256);
-									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);  
+									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer); 
+									buffer[strlen(buffer)-1]='\0';
+									printf("La mostra més antiga és:%s",&buffer[3]);
 									break;
 								case '4':
 									printf("Heu seleccionat l'opció {Y}:Demanar mínim\n");
@@ -204,6 +209,8 @@ int main(int argc, char *argv[]){
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer);
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
+									buffer[strlen(buffer)-1]='\0';
+									printf("La mostra més antiga és:%s",&buffer[3]);
 									break;
 								case '5':
 									printf("Heu seleccionat l'opció {R}:Reset màxim i mínim\n");
@@ -212,6 +219,7 @@ int main(int argc, char *argv[]){
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer);
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
+									printf("S'han resetejat els registres de màxim i mínim");
 									break;
 								case '6':
 									printf("Heu seleccionat l'opció {B}:Demanar comptador mostres guardades\n");
@@ -220,6 +228,8 @@ int main(int argc, char *argv[]){
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer);
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
+									buffer[strlen(buffer)-1]='\0';
+									printf("La mostra més antiga és:%s",&buffer[3]);
 										break;
 								
 								case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter
