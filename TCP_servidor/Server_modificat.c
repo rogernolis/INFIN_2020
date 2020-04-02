@@ -46,7 +46,7 @@
 //DADES REGISTRE / variables Globals / intentar fer-les locals?
 char 	MAXIMA[6]="99.99"; //*
 char 	MINIMA[6]="00.00";//*
-int 	nscans=0100;
+int 	nscans=100;
 char 	M_ANTIGA[6]="12.10";//*
 char 	arrayCircular[L_Array][TAM_MUESTRA]= {}; //Matriu dades temperatura a la llista
 char 	valor_transportat[6];
@@ -68,6 +68,8 @@ int main(int argc, char *argv[])
     int         temps = 0;
     char        tempsstr[2];
     int         numeromostra = 0;
+    int i;
+    time_t      t;
     //float     valorTemp = 46.00;
     //char      valorTempstr[6];
     //char		missatgesdeprova[] = "Hola\n";
@@ -148,8 +150,15 @@ int main(int argc, char *argv[])
 							//Obrir thread en cas de volguer consultar altres dades mentres es va analitzant.
 							//Iniciar comunicació amb Control sensor
 							//Comunicacio_ControlSensor(tempsstr, numeromostra);
-
-
+							/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
+				    			//(No es te en compte el temps ni el numero de mostres per fer mitjana).
+							/* Intializes random number generator */
+                                                         srand((unsigned) time(&t));
+                                                        i=0;
+                                                                 /* Print 5 random numbers from 0 to 49 */
+                                                          for(i = 0 ; i < L_Array ; i++ ) {
+                                                              sprintf(ArrayCircular[i], "%d\n", rand() % 71);
+                                                           }
 							//Enviar comprovació a client.
 							memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer,"{M0}\n");//Retornar missatge amb codi de validació 0 -> OK
@@ -251,7 +260,8 @@ int main(int argc, char *argv[])
             printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
 
 
-        }	
+        }
+	
         /*Tancar el socket fill*/
         result = close(newFd);
     }
@@ -261,7 +271,7 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 	int contador=0;
     int i;
 	nscans= 0;
-
+        
 
 
 	while (1) //Mientras no haya una interrupción. 
