@@ -68,8 +68,6 @@ int main(int argc, char *argv[])
     int         temps = 0;
     char        tempsstr[2];
     int         numeromostra = 0;
-    int i;
-    time_t      t;
     //float     valorTemp = 46.00;
     //char      valorTempstr[6];
     //char		missatgesdeprova[] = "Hola\n";
@@ -150,15 +148,8 @@ int main(int argc, char *argv[])
 							//Obrir thread en cas de volguer consultar altres dades mentres es va analitzant.
 							//Iniciar comunicació amb Control sensor
 							//Comunicacio_ControlSensor(tempsstr, numeromostra);
-							/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
-				    			//(No es te en compte el temps ni el numero de mostres per fer mitjana).
-							/* Intializes random number generator */
-                                                         srand((unsigned) time(&t));
-                                                        i=0;
-                                                                 /* Print 5 random numbers from 0 to 49 */
-                                                          for(i = 0 ; i < L_Array ; i++ ) {
-                                                              sprintf(ArrayCircular[i], "%d\n", rand() % 71);
-                                                           }
+							
+                                                       
 							//Enviar comprovació a client.
 							memset(buffer, 0, strlen(buffer)+1);
                             strcpy(buffer,"{M0}\n");//Retornar missatge amb codi de validació 0 -> OK
@@ -271,41 +262,55 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 	int contador=0;
     int i;
 	nscans= 0;
+	time_t t;
         
 
 
 	while (1) //Mientras no haya una interrupción. 
 	{
-	//Entrada de informació 
-		scanf("%s", valor_transportat);
-		if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
-		{
-			for(i=0; i<L_Array; i++) 
+		//Entrada de informació 
+		/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
+		//(No es te en compte el temps ni el numero de mostres per fer mitjana).
+		/* Intializes random number generator */
+		srand((unsigned) time(&t));
+		i=0;
+		/* Print L_array random numbers from 0 to 70 */
+		for(i = 0 ; i < L_Array ; i++ ) {
+			sprintf(valor_transportat[i], "%.2f\n", rand() % 70);
+			printf("Valor afegit: %s\n", ArrayCircular[i]);
+
+
+			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
-				arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
-				arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
-				arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
-				arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
-				arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
+				i=0;
+				for(i=0; i<L_Array; i++) 
+				{
+					arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
+					arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
+					arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
+					arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
+					arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
+				}
+				contador= L_Array-1;
 			}
-			contador= L_Array-1;
+			//ANALISIS DE LES MOSTRES* (pendent)
+
+			//GUARDAR DADA
+			arrayCircular[((L_Array-1)-contador)][0]=valor_transportat[0];
+			arrayCircular[((L_Array-1)-contador)][1]=valor_transportat[1];
+			arrayCircular[((L_Array-1)-contador)][2]=valor_transportat[2];
+			arrayCircular[((L_Array-1)-contador)][3]=valor_transportat[3];
+			arrayCircular[((L_Array-1)-contador)][4]=valor_transportat[4];
+			nscans++;
+			contador++;
+
+			/*Mostrar array actual	
+			for (i=0; i< L_Array; i++){ //VISUALIZAR ARRAY DE PARTIDA
+				printf("[%s] ",arrayCircular[i]);
+			}
+			printf("\n");
+			*/
 		}
-		//ANALISIS DE LES MOSTRES* (pendent)
-	
-		//GUARDAR DADA
-		arrayCircular[((L_Array-1)-contador)][0]=valor_transportat[0];
-		arrayCircular[((L_Array-1)-contador)][1]=valor_transportat[1];
-		arrayCircular[((L_Array-1)-contador)][2]=valor_transportat[2];
-		arrayCircular[((L_Array-1)-contador)][3]=valor_transportat[3];
-		arrayCircular[((L_Array-1)-contador)][4]=valor_transportat[4];
-		nscans++;
-		contador++;
-		
-		//Mostrar array actual	
-		for (i=0; i< L_Array; i++){ //VISUALIZAR ARRAY DE PARTIDA
-			printf("[%s] ",arrayCircular[i]);
-		}
-		printf("\n");
 	}
 	
 }
