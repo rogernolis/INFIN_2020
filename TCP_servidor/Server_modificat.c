@@ -184,9 +184,9 @@ int main(int argc, char *argv[])
                     strcat(buffer, "}");
                     //printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer,strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
-					Desplasament_llista();                
-                    
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);	
+			    Desplasament_llista();                
+                    			
                         break;
                 case 'X': //cas X MAXIMA REGISTRE
 					printf("Això funciona i estem a la etapa X\n");//*
@@ -236,7 +236,18 @@ int main(int argc, char *argv[])
 					strcpy(buffer, "{B0");
 					char x[5];
 					sprintf(x,"%i", nscans);
-                    strcat(buffer, x);
+			    /* Enviar sempre 4 xifres procedents del número de mostres*/
+			    if (strlen(x)<4){ 
+			    	int d=0;
+				    for (d= 0; d < (4-strlen(x)); d++){
+					  strcat(buffer, "0");  
+				    }
+				strcat(buffer, x);
+			    }
+			    else{
+				    strcat(buffer, x);
+			    }
+         
                     strcat(buffer, "}");
                     printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer, strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
@@ -267,7 +278,7 @@ int main(int argc, char *argv[])
 }
 void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 {
-	int contador=100;
+	int contador=0
     int i;
 	nscans= 0;
 	//time_t t;
@@ -280,13 +291,13 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 		i=0;
 		float r =0;
 		/* Print L_array random numbers from 0 to 70 */
-		for(i = 0 ; i < L_Array; i++ ) {
+		for(i = 0 ; i < (L_Array-1);i++ ) {
 			r = ((float)rand()/(float)RAND_MAX)*70;
 			sprintf(valor_transportat, "%.2f", r);
 			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
 				Desplasament_llista();
-				contador= L_Array-1;
+				contador= L_Array;
 			}
 			//ANALISIS DE LES MOSTRES* (pendent)
 			
@@ -297,7 +308,7 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			arrayCircular[((L_Array)-contador)][3]=valor_transportat[3];
 			arrayCircular[((L_Array)-contador)][4]=valor_transportat[4];
 			nscans++;
-			contador--;
+			contador++;
 
 			/*Mostrar array actual	
 			for (i=0; i< L_Array; i++){ //VISUALIZAR ARRAY DE PARTIDA
@@ -305,19 +316,19 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			}
 			printf("\n");
 			*/
-			printf("%d Valor afegit: %s\n", i, arrayCircular[i]);
+			printf("%d Valor afegit: %s\n", i, arrayCircular[((L_Array)-contador)]);
 		}
 }
 void Desplasament_llista(){
 	int i;
 	i=0;
-				for(i=0; i<L_Array; i++) 
-				{
-					arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
-					arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
-					arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
-					arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
-					arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
+	for(i=0; i<(L_Array-1); i++) 
+	{
+		arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
+		arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
+		arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
+		arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
+		arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
 				}
-	nscans--;
+	 nscans--;
 	}
