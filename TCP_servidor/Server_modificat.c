@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
                             printf("Número de mostres: %i\n", numeromostra);//*Comprovació/ENVIAMENT VIA SERIE A CONTROL S
 							//Obrir thread en cas de volguer consultar altres dades mentres es va analitzant.
 							//Iniciar comunicació amb Control sensor
-							//Comunicacio_ControlSensor(tempsstr, numeromostra);
+							Comunicacio_ControlSensor(tempsstr, numeromostra);
 							
                                                        
 							//Enviar comprovació a client.
