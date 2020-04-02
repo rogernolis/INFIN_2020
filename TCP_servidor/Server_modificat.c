@@ -266,8 +266,7 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
         
 
 
-	while (1) //Mientras no haya una interrupción. 
-	{
+	
 		//Entrada de informació 
 		/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
 		//(No es te en compte el temps ni el numero de mostres per fer mitjana).
@@ -277,9 +276,6 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 		/* Print L_array random numbers from 0 to 70 */
 		for(i = 0 ; i < L_Array ; i++ ) {
 			sprintf(valor_transportat[i], "%.2f\n", rand() % 70);
-			printf("Valor afegit: %s\n", ArrayCircular[i]);
-
-
 			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
 				i=0;
@@ -294,7 +290,7 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 				contador= L_Array-1;
 			}
 			//ANALISIS DE LES MOSTRES* (pendent)
-
+			
 			//GUARDAR DADA
 			arrayCircular[((L_Array-1)-contador)][0]=valor_transportat[0];
 			arrayCircular[((L_Array-1)-contador)][1]=valor_transportat[1];
@@ -310,8 +306,9 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			}
 			printf("\n");
 			*/
+			printf("Valor afegit: %s\n", ArrayCircular[i]);
 		}
-	}
+	
 	
 }
 
