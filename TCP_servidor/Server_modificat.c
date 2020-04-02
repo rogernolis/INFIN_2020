@@ -285,15 +285,7 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			sprintf(valor_transportat, "%.2f", r);
 			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
-				i=0;
-				for(i=0; i<L_Array; i++) 
-				{
-					arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
-					arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
-					arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
-					arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
-					arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
-				}
+				Desplasament_llista();
 				contador= L_Array-1;
 			}
 			//ANALISIS DE LES MOSTRES* (pendent)
@@ -327,4 +319,5 @@ void Desplasament_llista(){
 					arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
 					arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
 				}
+	nscans--;
 	}
