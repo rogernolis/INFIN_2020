@@ -38,7 +38,7 @@ void ImprimirMenu(void)
 /*programa*/
 int main(int argc, char *argv[]){
 	struct sockaddr_in	serverAddr;
-	char	    serverName[] = "127.0.0.1"; //Adreça IP on est� el servidor
+	char	    serverName[] = "127.0.0.1"; //Adreça IP on està el servidor
 	int			sockAddrSize;
 	int			sFd;
 	int 		h=0;
@@ -74,6 +74,7 @@ int main(int argc, char *argv[]){
 				scanf("%s",input1);
 			}
 			while (((isalpha(input1[0]) > 0) && input1[0] != 's' ) || input1[0]=='0' || (input1[0] > '6' && input1[0] != 's') || strlen(input1) > 1);				h=0;
+				
 				if (input1[0] != 's')
 				{
 					/*Conexió*/
@@ -93,90 +94,88 @@ int main(int argc, char *argv[]){
 					printf("Error en establir la connexió\n");
 					//exit(-1);
 				}
-						else
-						{
-							printf("\nConnexió establerta amb el servidor: adreça %s, port %d\n",	inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
-							switch (input1[0]){				//seleccionar les diferents opcions a enviar al servidor
+				else
+				{
+					printf("\nConnexió establerta amb el servidor: adreça %s, port %d\n",	inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
+					switch (input1[0]){				//seleccionar les diferents opcions a enviar al servidor
+						case '1':
+							printf("Heu seleccionat l'opció {M}:Posar en marxa/parar adquisició\n");
+							printf("Seleccioneu:\n");
+							printf("0:Parada\n");
+							printf("1:Marxa\n");
+							h=0;
+							
+							do 
+							{
+								if(h>0)
+								{
+									printf("VALOR ERRONI\n");
+								}
+							h++;
+							memset(input2, 0, strlen(input2));
+							scanf("%s",input2);
+							}
+							while ((isalpha(input2[0])>0) || (input2[0]>'1')|| strlen(input2) > 1);
+							
+							switch (input2[0]){
+								case '0':
+									cadena[0]='{';			
+									cadena[1]='M';
+									cadena[2]='0';
+									cadena[3]='}';
+									printf("Heu seleccionat parar l'adquisició\n");
+										break;		
 								case '1':
-									printf("Heu seleccionat l'opció {M}:Posar en marxa/parar adquisició\n");
-									printf("Seleccioneu:\n");
-									printf("0:Parada\n");
-									printf("1:Marxa\n");
-									h=0;
-									do 
-									{
-										if(h>0)
-										{
+									cadena[0]='{';
+									cadena[1]='M';
+									cadena[2]='1';
+									printf("Heu seleccionat posada en marxa\n");
+							
+									do{
+										if(i!=0){
 											printf("VALOR ERRONI\n");
 										}
-										h++;
-										memset(input2, 0, strlen(input2));
-										scanf("%s",input2);
+									printf("Quants segons de mostreig voleu(1..20)?\n");
+									memset(cadena1, 0, strlen(cadena1)+1);
+									scanf("%s",&cadena1[0]);
+									i++;
 									}
-									while ((isalpha(input2[0])>0) || (input2[0]>'1')|| strlen(input2) > 1);
-									
-									switch (input2[0]){
-										
-										case '0':
-											cadena[0]='{';			
-											cadena[1]='M';
-											cadena[2]='0';
-											cadena[3]='}';
-											printf("Heu seleccionat parar l'adquisició\n");
-												break;		
-										case '1':
-											cadena[0]='{';
-											cadena[1]='M';
-											cadena[2]='1';
-											printf("Heu seleccionat posada en marxa\n");
-											do{
-												if(i!=0){
-													printf("VALOR ERRONI\n");
-												}
-												printf("Quants segons de mostreig voleu(1..20)?\n");
-												memset(cadena1, 0, strlen(cadena1)+1);
-												scanf("%s",&cadena1[0]);
-												i++;
-											}
-											while((cadena1[0]>='2' && cadena1[1]>'0')|| (strlen(cadena1)>2) || (cadena1[0]> '2' && cadena1[1]>='0') ||(isalpha(cadena1[0])!=0)); 
-												if(cadena1[1]=='\0')
-												{
+									while((cadena1[0]>='2' && cadena1[1]>'0')|| (strlen(cadena1)>2) || (cadena1[0]> '2' && cadena1[1]>='0') ||(isalpha(cadena1[0])!=0)); 
+										if(cadena1[1]=='\0'){
 													//printf("una xifra\n");
-													cadena1[1]=cadena1[0];
-													cadena1[0]='0';
-											}
-											do{
-												if(t!=0){
-													printf("VALOR ERRONI\n");
-												}
-												printf("Número de mostres fer la mitjana(1..9)?\n");
-												memset(cadena2, 0, strlen(cadena2)+1);
-												scanf("%s",&cadena2[0]);
-												t++;
-											}
-											while((isalpha(cadena2[0])!=0) || (cadena2[0]>='1' && cadena2[1]>='0') || (strlen(cadena2)>1));
-												cadena2[1]='}';
-												strncat(cadena, cadena1,2);
-												strcat(cadena, cadena2);
-												
-													break;
-										default:
-											printf("Opció incorrecta\n");	
-											printf("He llegit 0x%hhx \n",input1[0]);
-											cadena2[1] = input1[0];
-											strcat(cadena,cadena2);
-												break;	
+											cadena1[1]=cadena1[0];
+											cadena1[0]='0';
+										}
+									do{
+										if(t!=0){
+											printf("VALOR ERRONI\n");
+										}
+										printf("Número de mostres fer la mitjana(1..9)?\n");
+										memset(cadena2, 0, strlen(cadena2)+1);
+										scanf("%s",&cadena2[0]);
+										t++;
+									}
+									while((isalpha(cadena2[0])!=0) || (cadena2[0]>='1' && cadena2[1]>='0') || (strlen(cadena2)>1));
+										cadena2[1]='}';
+										strncat(cadena, cadena1,2);
+										strcat(cadena, cadena2);
+											break;
+								default:
+									printf("Opció incorrecta\n");	
+									printf("He llegit 0x%hhx \n",input1[0]);
+									cadena2[1] = input1[0];
+									strcat(cadena,cadena2);
+										break;	
 									}
 									memset(buffer, 0, strlen(buffer));
 									strcpy(buffer,cadena);					//enviar al servidor la cadena
 									result = write(sFd, buffer, strlen(buffer));
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer); 
 									result = read(sFd, buffer, 256);       	//rebre resposta servidor
-									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
-									printf("L'adquisició esta en marxa");           
+									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);    
 										break;
 								case '2':
-									printf("Heu seleccionat l'opció {U}:Mostra més antiga\n");
+									printf("Heu seleccionat l'opció {U}: Mostra més antiga\n");
 									memset(buffer, 0, strlen(buffer));
 									strcpy(buffer,"{U}");
 									result = write(sFd, buffer, strlen(buffer));
@@ -190,18 +189,18 @@ int main(int argc, char *argv[]){
 									}
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
 									buffer[strlen(buffer)-1]='\0';
-									printf("La mostra més antiga és:%s",&buffer[3]);              
+									printf("La mostra més antiga és: %s",&buffer[3]);              
 										break;
 								case '3':
-									printf("Heu seleccionat l'opció {X}:Demanar màxim\n");
+									printf("Heu seleccionat l'opció {X}: Demanar màxim\n");
 									strcpy(buffer,"{X}");
 									result = write(sFd, buffer, strlen(buffer));
 									printf("Missatge enviat a servidor(bytes %d): %s\n",result,buffer);  
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer); 
 									buffer[strlen(buffer)-1]='\0';
-									printf("La mostra més antiga és:%s",&buffer[3]);
-									break;
+									printf("La mostra més antiga és: %s",&buffer[3]);
+										break;
 								case '4':
 									printf("Heu seleccionat l'opció {Y}:Demanar mínim\n");
 									strcpy(buffer,"{Y}");
@@ -211,7 +210,7 @@ int main(int argc, char *argv[]){
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
 									buffer[strlen(buffer)-1]='\0';
 									printf("La mostra més antiga és:%s",&buffer[3]);
-									break;
+										break;
 								case '5':
 									printf("Heu seleccionat l'opció {R}:Reset màxim i mínim\n");
 									strcpy(buffer,"{R}");
@@ -220,7 +219,7 @@ int main(int argc, char *argv[]){
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
 									printf("S'han resetejat els registres de màxim i mínim");
-									break;
+										break;
 								case '6':
 									printf("Heu seleccionat l'opció {B}:Demanar comptador mostres guardades\n");
 									strcpy(buffer,"{B}");
@@ -229,7 +228,7 @@ int main(int argc, char *argv[]){
 									result = read(sFd, buffer, 256);
 									printf("Missatge rebut del servidor(bytes %d): %s\n",	result, buffer);
 									buffer[strlen(buffer)-1]='\0';
-									printf("La mostra més antiga és:%s",&buffer[3]);
+									printf("Tenim %s mostres",&buffer[3]);
 										break;
 								
 								case 0x0a: //Això és per enviar els 0x0a (line feed) que s'envia quan li donem al Enter
@@ -246,8 +245,7 @@ int main(int argc, char *argv[]){
 					
 					/*Tancar el socket*/
 					close(sFd);
-					
-					
+										
 			}
 			else
 			{
