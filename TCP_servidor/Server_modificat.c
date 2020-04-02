@@ -46,14 +46,14 @@
 //DADES REGISTRE / variables Globals / intentar fer-les locals?
 char 	MAXIMA[6]="99.99"; //*
 char 	MINIMA[6]="00.00";//*
-int 	nscans=100;
+int 	nscans=0;
 char 	M_ANTIGA[6]="12.10";//*
 char 	arrayCircular[L_Array][TAM_MUESTRA]= {}; //Matriu dades temperatura a la llista
 char 	valor_transportat[6];
 
 //FUNCIONS
 void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana);
-
+void Desplasament_llista();
 
 int main(int argc, char *argv[])
 {
@@ -171,14 +171,22 @@ int main(int argc, char *argv[])
                     printf("Això funciona i estem a la etapa U\n");//*
 					//FUNCIONS DE LA ETAPA:
 					//1()Agafar última dada del historial
+					M_ANTIGA[0] = arrayCircular[99][0];
+					M_ANTIGA[1] = arrayCircular[99][1];
+					M_ANTIGA[2] = arrayCircular[99][2];
+					M_ANTIGA[3] = arrayCircular[99][3];
+					M_ANTIGA[4] = arrayCircular[99][4];
+					
 					//2()Prepararla enviament a client
                     memset(buffer, 0, strlen(buffer));
 					strcpy(buffer, "{U0");
-                    strcat(buffer, M_ANTIGA);
+					strcat(buffer, M_ANTIGA);
                     strcat(buffer, "}");
                     //printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer,strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
-                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);//*
+                    printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);
+					Desplasament_llista();                
+                    
                         break;
                 case 'X': //cas X MAXIMA REGISTRE
 					printf("Això funciona i estem a la etapa X\n");//*
@@ -259,23 +267,22 @@ int main(int argc, char *argv[])
 }
 void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 {
-	int contador=0;
+	int contador=100;
     int i;
 	nscans= 0;
-	time_t t;
-        
-
-
-	
+	//time_t t;
+        	
 		//Entrada de informació 
 		/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
 		//(No es te en compte el temps ni el numero de mostres per fer mitjana).
 		/* Intializes random number generator */
-		srand((unsigned) time(&t));
+		srand((unsigned) time(NULL));
 		i=0;
+		float r =0;
 		/* Print L_array random numbers from 0 to 70 */
-		for(i = 0 ; i < L_Array ; i++ ) {
-			sprintf(valor_transportat[i], "%.2f\n", rand() % 70);
+		for(i = 0 ; i < L_Array; i++ ) {
+			r = ((float)rand()/(float)RAND_MAX)*70;
+			sprintf(valor_transportat, "%.2f", r);
 			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
 				i=0;
@@ -292,13 +299,13 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			//ANALISIS DE LES MOSTRES* (pendent)
 			
 			//GUARDAR DADA
-			arrayCircular[((L_Array-1)-contador)][0]=valor_transportat[0];
-			arrayCircular[((L_Array-1)-contador)][1]=valor_transportat[1];
-			arrayCircular[((L_Array-1)-contador)][2]=valor_transportat[2];
-			arrayCircular[((L_Array-1)-contador)][3]=valor_transportat[3];
-			arrayCircular[((L_Array-1)-contador)][4]=valor_transportat[4];
+			arrayCircular[((L_Array)-contador)][0]=valor_transportat[0];
+			arrayCircular[((L_Array)-contador)][1]=valor_transportat[1];
+			arrayCircular[((L_Array)-contador)][2]=valor_transportat[2];
+			arrayCircular[((L_Array)-contador)][3]=valor_transportat[3];
+			arrayCircular[((L_Array)-contador)][4]=valor_transportat[4];
 			nscans++;
-			contador++;
+			contador--;
 
 			/*Mostrar array actual	
 			for (i=0; i< L_Array; i++){ //VISUALIZAR ARRAY DE PARTIDA
@@ -306,9 +313,18 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			}
 			printf("\n");
 			*/
-			printf("Valor afegit: %s\n", ArrayCircular[i]);
+			printf("%d Valor afegit: %s\n", i, arrayCircular[i]);
 		}
-	
-	
 }
-
+void Desplasament_llista(){
+	int i;
+	i=0;
+				for(i=0; i<L_Array; i++) 
+				{
+					arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
+					arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
+					arrayCircular[((L_Array-1)-i)][2]= arrayCircular[((L_Array-1)-(i+1))][2];
+					arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
+					arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
+				}
+	}
