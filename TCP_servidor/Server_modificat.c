@@ -171,11 +171,11 @@ int main(int argc, char *argv[])
                     printf("Això funciona i estem a la etapa U\n");//*
 					//FUNCIONS DE LA ETAPA:
 					//1()Agafar última dada del historial
-					M_ANTIGA[0] = arrayCircular[99][0];
-					M_ANTIGA[1] = arrayCircular[99][1];
-					M_ANTIGA[2] = arrayCircular[99][2];
-					M_ANTIGA[3] = arrayCircular[99][3];
-					M_ANTIGA[4] = arrayCircular[99][4];
+					M_ANTIGA[0] = arrayCircular[nscans-1][0];
+					M_ANTIGA[1] = arrayCircular[nscans-1][1];
+					M_ANTIGA[2] = arrayCircular[nscans-1][2];
+					M_ANTIGA[3] = arrayCircular[nscans-1][3];
+					M_ANTIGA[4] = arrayCircular[nscans-1][4];
 					
 					//2()Prepararla enviament a client
                     memset(buffer, 0, strlen(buffer));
@@ -185,8 +185,21 @@ int main(int argc, char *argv[])
                     //printf("ENVIAMENT: %s\n", buffer);
                     result = write(newFd, buffer,strlen(buffer) + 1);// el +1 el posem per enviar el 0 al final de la cadena i aixi saber que és el final de la cadena
                     printf("Missatge enviat a client (bytes %d): %s\n", result, buffer);	
-			    Desplasament_llista();                
-                    			
+					//Borrar mostra antiga per la seguent
+					arrayCircular[nscans][0] = 0;
+					arrayCircular[nscans][1] = 0;
+					arrayCircular[nscans][2] = 0;
+					arrayCircular[nscans][3] = 0;
+					arrayCircular[nscans][4] = 0;
+					if(nscans!= 0){
+						nscans--;
+					}
+					/*int i=0;
+					for(i = 0 ; i < (L_Array);i++ ){
+						printf("%d Prova Valor afegit: %s\n", i, arrayCircular[i]);*/
+												
+					
+					
                         break;
                 case 'X': //cas X MAXIMA REGISTRE
 					printf("Això funciona i estem a la etapa X\n");//*
@@ -278,36 +291,37 @@ int main(int argc, char *argv[])
 }
 void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 {
-	int contador=0
-    int i;
-	nscans= 0;
+	int contador=0;
+    int i=0;
 	//time_t t;
         	
 		//Entrada de informació 
 		/*GENERACIÓ DE NOMBRES PER OMPLIR ARRAY CIRCULAR*/
 		//(No es te en compte el temps ni el numero de mostres per fer mitjana).
 		/* Intializes random number generator */
+		
 		srand((unsigned) time(NULL));
-		i=0;
 		float r =0;
+		nscans=0;
 		/* Print L_array random numbers from 0 to 70 */
-		for(i = 0 ; i < (L_Array-1);i++ ) {
+		for(i = 0 ; i < (L_Array);i++ ) {
 			r = ((float)rand()/(float)RAND_MAX)*70;
 			sprintf(valor_transportat, "%.2f", r);
-			if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
+			Desplasament_llista();
+			/*if (nscans > (L_Array-1))	//DESPLAÇAR VALORS DE L'ARRAY UNA POSICIÓ CAP A LA DRETA, EN CAS DE TROBARSE PLENA I BORRAR L'ÚLTIM VALOR.
 			{
-				Desplasament_llista();
+				
 				contador= L_Array;
-			}
+			}*/
 			//ANALISIS DE LES MOSTRES* (pendent)
 			
 			//GUARDAR DADA
-			arrayCircular[((L_Array)-contador)][0]=valor_transportat[0];
-			arrayCircular[((L_Array)-contador)][1]=valor_transportat[1];
-			arrayCircular[((L_Array)-contador)][2]=valor_transportat[2];
-			arrayCircular[((L_Array)-contador)][3]=valor_transportat[3];
-			arrayCircular[((L_Array)-contador)][4]=valor_transportat[4];
-			nscans++;
+			arrayCircular[0][0]=valor_transportat[0];
+			arrayCircular[0][1]=valor_transportat[1];
+			arrayCircular[0][2]=valor_transportat[2];
+			arrayCircular[0][3]=valor_transportat[3];
+			arrayCircular[0][4]=valor_transportat[4];
+			printf("%d Valor afegit: %s\n", nscans, arrayCircular[0]);
 			contador++;
 
 			/*Mostrar array actual	
@@ -316,13 +330,12 @@ void Comunicacio_ControlSensor(char TempsMostreig[3], int NumerosMitjana)
 			}
 			printf("\n");
 			*/
-			printf("%d Valor afegit: %s\n", i, arrayCircular[((L_Array)-contador)]);
 		}
 }
 void Desplasament_llista(){
 	int i;
 	i=0;
-	for(i=0; i<(L_Array-1); i++) 
+	for(i=0; i<(L_Array); i++) 
 	{
 		arrayCircular[((L_Array-1)-i)][0]= arrayCircular[((L_Array-1)-(i+1))][0];
 		arrayCircular[((L_Array-1)-i)][1]= arrayCircular[((L_Array-1)-(i+1))][1];
@@ -330,5 +343,7 @@ void Desplasament_llista(){
 		arrayCircular[((L_Array-1)-i)][3]= arrayCircular[((L_Array-1)-(i+1))][3];
 		arrayCircular[((L_Array-1)-i)][4]= arrayCircular[((L_Array-1)-(i+1))][4];
 				}
-	 nscans--;
+	 nscans++;
+	 if (nscans > 100)
+	 nscans=100;
 	}
